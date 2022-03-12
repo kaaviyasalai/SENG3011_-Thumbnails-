@@ -113,10 +113,10 @@ def listeria_scraper():
             headline = headline.replace("</title>", "")
             try:
                 headlines = headline.split('|')
-                data['headline'] = headlines[0]
+                data["headline"] = headlines[0]
             except:
                 None
-                data['headline'] = headline
+                data["headline"] = headline
 
 
             ##############   finding the main text
@@ -164,19 +164,25 @@ def listeria_scraper():
 
 
 
-            objects["locations"] = locations
-            objects["diseases"] = diseases
-            objects["syndromes"] = syndromes
-            data["reports"] = objects
+        objects["locations"] = locations
+        objects["diseases"] = diseases
+        objects["syndromes"] = syndromes
+        data["reports"] = objects
+        
+        #only append for correct url
+        if (data["url"] != ""):
+            #print(data)
             articlesData.append(data)
 
     return articlesData
 
 #takes a while to print
 if __name__ == "__main__":
+    #listeria_scraper()
     for i in listeria_scraper():
         print(i)
         print("\n")
+    
 
 '''
 url - done
