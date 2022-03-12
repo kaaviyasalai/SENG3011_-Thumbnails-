@@ -45,6 +45,10 @@ def listeria_scraper():
         objects = { "diseases": [""], "syndromes": [""], "event_date": "", "locations": [""], }
         data = { "url": "", "date_of_publication": "", "headline": "", "main_text": "", "reports": [objects] }
         locations = []
+        
+        #add listeriosis as default
+        diseases = ["listeriosis"]
+        syndromes = []
 
         #get different outbreak links
         if (patternIndex.match(str(link.get('href')))):
@@ -90,16 +94,16 @@ def listeria_scraper():
                             data["date_of_publication"] = 'xx-xx-xx xx:xx:xx'
 
                 #check if any other diseases are mentioned in the page
-                #add listeriosis as default
-                objects["diseases"].append("listeriosis")
+
+                #print(objects["diseases"])
                 for disease in diseaseList:
-                    if ((str(para)).find(disease["name"]) != -1) and (disease["name"] not in objects["diseases"]):
-                        objects["diseases"].append(disease["name"])
+                    if ((str(para)).find(disease["name"]) != -1) and (disease["name"] not in diseases):
+                        diseases.append(disease["name"])
 
                 #check if any syndromes are mentioned in the page
                 for syndrome in syndromeList:
-                    if (str(para)).find(syndrome["name"]) != -1 and (syndrome["name"] not in objects["syndromes"]):
-                        objects["syndromes"].append(syndrome["name"])
+                    if (str(para)).find(syndrome["name"]) != -1 and (syndrome["name"] not in syndromes):
+                        syndromes.append(syndrome["name"])
 
 
             #find the headline
@@ -161,6 +165,8 @@ def listeria_scraper():
 
 
             objects["locations"] = locations
+            objects["diseases"] = diseases
+            objects["syndromes"] = syndromes
             data["reports"] = objects
             articlesData.append(data)
 
