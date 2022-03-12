@@ -164,24 +164,24 @@ def listeria_scraper():
 
 
 
-        objects["locations"] = locations
+            objects["locations"] = locations
         objects["diseases"] = diseases
         objects["syndromes"] = syndromes
         data["reports"] = objects
-        
-        #only append for correct url
+        #print(data)
+            #only append for correct url
         if (data["url"] != ""):
-            #print(data)
+            print(data)
             articlesData.append(data)
 
     return articlesData
 
 #takes a while to print
 if __name__ == "__main__":
-    #listeria_scraper()
-    for i in listeria_scraper():
-        print(i)
-        print("\n")
+    listeria_scraper()
+    #for i in listeria_scraper():
+    #    print(i)
+    #    print("\n")
     
 
 '''
