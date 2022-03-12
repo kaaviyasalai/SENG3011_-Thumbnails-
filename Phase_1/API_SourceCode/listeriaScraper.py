@@ -42,10 +42,11 @@ def listeria_scraper():
     for link in soup.find_all('a'):
 
         #initialise data structures
-        objects = { "diseases": [""], "syndromes": [""], "event_date": "", "locations": [""], }
-        data = { "url": "", "date_of_publication": "", "headline": "", "main_text": "", "reports": [objects] }
+        objects = { "diseases": [], "syndromes": [], "event_date": "", "locations": [], }
+        data = { "url": "", "date_of_publication": "", "headline": "", "main_text": "", "reports": [] }
+        #data["reports"] = objects
         locations = []
-        
+
         #add listeriosis as default
         diseases = ["listeriosis"]
         syndromes = []
@@ -105,7 +106,6 @@ def listeria_scraper():
                     if (str(para)).find(syndrome["name"]) != -1 and (syndrome["name"] not in syndromes):
                         syndromes.append(syndrome["name"])
 
-
             #find the headline
             #remove tags and junk
             headline = str(s.title)
@@ -129,10 +129,9 @@ def listeria_scraper():
 
 
 
-        #find the locations
-        if (patternLocation.match(str(link.get('href')))):
+            #find the locations
             route = str(link.get('href'))
-            #print(base+route)
+            route = route.replace("index.html", "map.html")
 
             #now navigate to individual pages that end in map.html
             p = requests.get(base + route)
@@ -153,25 +152,17 @@ def listeria_scraper():
                     state = state.replace("\n", "")
                     if state not in locations and state != "":
                         locations.append(state)
-        
-        
-           #if locations is empty then 
-           #DONT KNOW HOW TO PARSE COLLAPSABLE TABLES :(
-            #if (locations == []):
+
+                #if locations is empty then 
+                #DONT KNOW HOW TO PARSE COLLAPSABLE TABLES :(
+                #if (locations == []):
                 #print("empt")
-            #print(locations)
-
-
 
 
             objects["locations"] = locations
-        objects["diseases"] = diseases
-        objects["syndromes"] = syndromes
-        data["reports"] = objects
-        #print(data)
-            #only append for correct url
-        if (data["url"] != ""):
-            print(data)
+            objects["syndromes"] = syndromes
+            objects["diseases"] = diseases
+            data["reports"] = objects
             articlesData.append(data)
 
     return articlesData
@@ -179,10 +170,9 @@ def listeria_scraper():
 #takes a while to print
 if __name__ == "__main__":
     listeria_scraper()
-    #for i in listeria_scraper():
-    #    print(i)
-    #    print("\n")
-    
+    for i in listeria_scraper():
+        print(i)
+        print("\n")
 
 '''
 url - done
