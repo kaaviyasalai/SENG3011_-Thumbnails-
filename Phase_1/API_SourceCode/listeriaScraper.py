@@ -1,5 +1,6 @@
 # INSTALL BEAUTIFULSOUP
 # pip install beautifulsoup4
+# pip install pymongo
 
 from functools import partialmethod
 from bs4 import BeautifulSoup
@@ -7,6 +8,8 @@ import requests
 import re
 import json
 from datetime import datetime
+from pymongo import MongoClient
+
 
 #check if url exists in json list
 def check_url(url, list):
@@ -25,10 +28,14 @@ def listeria_scraper():
     soup = BeautifulSoup(page.content, 'html.parser')
 
     #load the disease and syndrome lists
-    diseaseFile = open('diseaseList.json')
+    #diseaseFile = open('diseaseList.json')
+    # if the above line causes error try the line below
+    diseaseFile = open('Phase_1\API_SourceCode\diseaseList.json')
     diseaseList = json.load(diseaseFile)
 
-    syndromeFile = open('syndromeList.json')
+    #syndromeFile = open('syndromeList.json')
+    # if the above line causes error try the line below
+    syndromeFile = open('Phase_1\API_SourceCode\syndromeList.json')
     syndromeList = json.load(syndromeFile)
 
     #regex pattern for the index files and files with case numbers
@@ -169,10 +176,23 @@ def listeria_scraper():
 
 #takes a while to print
 if __name__ == "__main__":
+
+    cluster = "mongodb+srv://thumbnails:thumbnails@cluster0.lfkm3.mongodb.net/SENG3011?retryWrites=true&w=majority"
+    client = MongoClient(cluster)
+
+    # Select the database and the cluster 
+    db = client.SENG3011
+    collection = db.SENG3011_collection
+
+    # Delete all entries in the cluster
+    result = collection.delete_many({})
+
     listeria_scraper()
     for i in listeria_scraper():
         print(i)
         print("\n")
+        # Add document to the cluster
+        result = collection.insert_one(i) 
 
 '''
 url - done
