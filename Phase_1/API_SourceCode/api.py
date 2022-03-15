@@ -1,18 +1,19 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-import pymongo
+from pymongo import MongoClient
   
-connection_url = 'mongodb+srv://thumbnails:thumbnails.@cluster0.lfkm3.mongodb.net/SENG3011?retryWrites=true&w=majority'
+cluster = "mongodb+srv://thumbnails:thumbnails@cluster0.lfkm3.mongodb.net/SENG3011?retryWrites=true&w=majority"
 app = Flask(__name__)
-client = pymongo.MongoClient(connection_url)
+client = MongoClient(cluster)
 
-Database = client.get_database('SENG3011')
+db = client.SENG3011
 
-Table = pymongo.collection.Collection(Database, 'SENG3011_collection')
+collection = db.SENG3011_collection
 
 @app.route('/find', methods=['GET'])
 def find():
-    query = Table.find()
+    query = collection.find({})
+
     output = {}
     i = 0 
     for x in query:
@@ -24,7 +25,7 @@ def find():
 @app.route('/find-one/<argument>/<value>/', methods=['GET'])
 def findOne(argument, value):
     queryObject = {argument: value}
-    query = Table.find_one(queryObject)
+    query = collection.find_one(queryObject)
     query.pop('_id')
     return jsonify(query)
 
