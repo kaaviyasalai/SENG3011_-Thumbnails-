@@ -3,7 +3,7 @@ from flask_cors import CORS
 from pymongo import MongoClient
   
 cluster = "mongodb+srv://thumbnails:thumbnails@cluster0.lfkm3.mongodb.net/SENG3011?retryWrites=true&w=majority"
-app = Flask(__name__)
+application = Flask(__name__)
 client = MongoClient(cluster)
 
 db = client.SENG3011
