@@ -10,7 +10,7 @@ db = client.SENG3011
 
 collection = db.SENG3011_collection
 
-@app.route('/find', methods=['GET'])
+@application.route('/find', methods=['GET'])
 def find():
     query = collection.find({})
 
@@ -22,7 +22,7 @@ def find():
         i+=1
     return jsonify(output)
 
-@app.route('/find-one/<argument>/<value>/', methods=['GET'])
+@application.route('/find-one/<argument>/<value>/', methods=['GET'])
 def findOne(argument, value):
     queryObject = {argument: value}
     query = collection.find_one(queryObject)
@@ -30,5 +30,5 @@ def findOne(argument, value):
     return jsonify(query)
 
 if __name__ == '__main__':
-    app.run(port=8000)
+    application.run(port=8000)
 
