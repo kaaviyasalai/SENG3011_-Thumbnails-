@@ -3,14 +3,14 @@ from flask_cors import CORS
 from pymongo import MongoClient
   
 cluster = "mongodb+srv://thumbnails:thumbnails@cluster0.lfkm3.mongodb.net/SENG3011?retryWrites=true&w=majority"
-application = Flask(__name__)
+app = Flask(__name__)
 client = MongoClient(cluster)
 
 db = client.SENG3011
 
 collection = db.SENG3011_collection
 
-@application.route('/find', methods=['GET'])
+@app.route('/find', methods=['GET'])
 def find():
     query = collection.find({})
 
@@ -22,7 +22,7 @@ def find():
         i+=1
     return jsonify(output)
 
-@application.route('/find-one/<argument>/<value>/', methods=['GET'])
+@app.route('/find-one/<argument>/<value>/', methods=['GET'])
 def findOne(argument, value):
     queryObject = {argument: value}
     query = collection.find_one(queryObject)
@@ -30,5 +30,5 @@ def findOne(argument, value):
     return jsonify(query)
 
 if __name__ == '__main__':
-    application.run(port=8000)
+    app.run(port=8000)
 
